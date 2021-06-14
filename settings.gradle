@@ -1,0 +1,2 @@
+rootProject.name = "Cardapium-restaurantes"
+include ':app'
