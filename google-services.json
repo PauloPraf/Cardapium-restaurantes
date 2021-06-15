@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "340405587155",
+    "project_id": "cardapiumrestaurantes",
+    "storage_bucket": "cardapiumrestaurantes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340405587155:android:838445a7334a7157b15826",
+        "android_client_info": {
+          "package_name": "com.example.cardapium_restaurantes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340405587155-s7c4f0t9tp6bosuuri9d59pv8bcv8rpp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAmBxGVrgLYkwCiYYj6zehZdX1lRR72dw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340405587155-s7c4f0t9tp6bosuuri9d59pv8bcv8rpp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
