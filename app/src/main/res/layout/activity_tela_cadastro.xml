@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fundo_comidas_2_branco"
+    tools:context=".TelaCadastro">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="0dp"
+        android:layout_height="66dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtCadastro"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mini_logo_cardapium" />
+
+    <TextView
+        android:id="@+id/txtCadastro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="155dp"
+        android:layout_marginLeft="155dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="82dp"
+        android:layout_marginRight="82dp"
+        android:fontFamily="@font/ubuntubolditalic"
+        android:text="Cadastro"
+        android:textColor="@color/marrom"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtNome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="133dp"
+        android:layout_marginBottom="130dp"
+        android:fontFamily="@font/ubuntubolditalic"
+        android:text="Nome"
+        android:textColor="@color/marrom"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/txtEmail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtSobrenome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:fontFamily="@font/ubuntubolditalic"
+        android:text="Sobrenome"
+        android:textColor="@color/marrom"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/edtTxtSobrenome" />
+
+    <TextView
+        android:id="@+id/txtEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="52dp"
+        android:fontFamily="@font/ubuntubolditalic"
+        android:text="Email"
+        android:textColor="@color/marrom"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtSobrenome" />
+
+    <TextView
+        android:id="@+id/txtSenha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="45dp"
+        android:fontFamily="@font/ubuntubolditalic"
+        android:text="Senha"
+        android:textColor="@color/marrom"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
+
+    <TextView
+        android:id="@+id/txtConfirmarSenha"
+        android:layout_width="0dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:fontFamily="@font/ubuntubolditalic"
+        android:text="Confirmar senha"
+        android:textColor="@color/marrom"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/edtTxtConfirmarSenha"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtTxtSenha" />
+
+    <EditText
+        android:id="@+id/edtTxtNome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="133dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="428dp"
+        android:ems="10"
+        android:hint="Nome"
+        android:inputType="textPersonName"
+        android:textColor="@color/amarelo_forte"
+        android:textColorHint="@color/amarelo_forte"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edtTxtSobrenome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:ems="10"
+        android:hint="Sobrenome"
+        android:inputType="textPersonName"
+        android:textColor="@color/amarelo_forte"
+        android:textColorHint="@color/amarelo_forte"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtTxtNome" />
+
+    <EditText
+        android:id="@+id/edtTxtEmail"
+        android:layout_width="0dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="81dp"
+        android:layout_marginBottom="76dp"
+        android:ems="10"
+        android:hint="email@provedor.com"
+        android:inputType="textEmailAddress"
+        android:textColor="@color/amarelo_forte"
+        android:textColorHint="@color/amarelo_forte"
+        app:layout_constraintBottom_toBottomOf="@+id/edtTxtSenha"
+        app:layout_constraintEnd_toEndOf="@+id/edtTxtSenha"
+        app:layout_constraintStart_toStartOf="@+id/edtTxtSenha"
+        app:layout_constraintTop_toTopOf="@+id/edtTxtSobrenome" />
+
+    <EditText
+        android:id="@+id/edtTxtSenha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="321dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="320dp"
+        android:ems="10"
+        android:hint="********"
+        android:inputType="textPassword"
+        android:textColor="@color/amarelo_forte"
+        android:textColorHint="@color/amarelo_forte"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCadastro" />
+
+    <EditText
+        android:id="@+id/edtTxtConfirmarSenha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:ems="10"
+        android:hint="********"
+        android:inputType="textPassword"
+        android:textColor="@color/amarelo_forte"
+        android:textColorHint="@color/amarelo_forte"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtConfirmarSenha" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="160dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="75dp"
+        android:text="Cadastrar"
+        android:textAllCaps="false"
+        app:backgroundTint="@color/amarelo_forte"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtTxtNome" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
