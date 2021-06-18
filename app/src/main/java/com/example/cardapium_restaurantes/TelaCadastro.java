@@ -17,6 +17,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import Model.UserModel;
+
 public class TelaCadastro extends AppCompatActivity {
     private EditText edtTxtNome, edtTxtSobrenome, edtTxtEmail, edtTxtSenha, edtTxtConfirmarSenha;
     private Button button;
@@ -94,7 +96,12 @@ public class TelaCadastro extends AppCompatActivity {
     }
 
     private void cadastrarUsuario() {
-        mAuth.createUserWithEmailAndPassword(edtTxtEmail.getText().toString(), edtTxtSenha.getText().toString())
+        UserModel newUser = new UserModel();
+        newUser.setEmail(edtTxtEmail.getText().toString());
+        newUser.setNome(edtTxtNome.getText().toString());
+        newUser.setSobrenome(edtTxtSobrenome.getText().toString());
+
+        mAuth.createUserWithEmailAndPassword(newUser.getEmail(), edtTxtSenha.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -102,6 +109,8 @@ public class TelaCadastro extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(null, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            newUser.setId(mAuth.getUid());
+                            newUser.salvar();
                             Toast.makeText(getApplicationContext(), "Cadastro realizado com sucesso", Toast.LENGTH_LONG).show();
                             startActivity(new Intent(getApplicationContext(), TelaDoUsuario.class));
                         } else {
