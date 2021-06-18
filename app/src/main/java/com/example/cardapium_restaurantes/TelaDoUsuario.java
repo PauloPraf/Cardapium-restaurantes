@@ -1,10 +1,10 @@
 package com.example.cardapium_restaurantes;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -56,6 +56,7 @@ public class TelaDoUsuario extends AppCompatActivity {
                 String nome = snapshot.child("nome").getValue(String.class);
                 String sobrenome = snapshot.child("sobrenome").getValue(String.class);
                 String email = snapshot.child("email").getValue(String.class);
+                String urlFoto = snapshot.child("urlFoto").getValue(String.class);
                 currentUser = new UserModel(mAuth.getUid(), nome, sobrenome, email);
                 ola.setText("Olá, " + currentUser.getNome());
             }
