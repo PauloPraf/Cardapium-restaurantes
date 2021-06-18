@@ -99,7 +99,7 @@ public class TelaCadastro extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] image = byteArrayOutputStream.toByteArray();
 
-        StorageReference imgRef = sRef.child(mAuth.getUid()+".jpeg");
+        StorageReference imgRef = sRef.child("Profile").child(mAuth.getUid()+".jpeg");
         UploadTask uploadTask = imgRef.putBytes(image);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -107,6 +107,7 @@ public class TelaCadastro extends AppCompatActivity {
                  Log.d("Success", "imageUploaded:success");
             }
         });
+        Toast.makeText(this, imgRef.getDownloadUrl().toString(), Toast.LENGTH_LONG).show();;
     }
 
     @Override
@@ -172,7 +173,6 @@ public class TelaCadastro extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(null, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
                             newUser.setId(mAuth.getUid());
                             newUser.salvar();
 
