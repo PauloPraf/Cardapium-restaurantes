@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -42,7 +41,7 @@ public class TelaDoUsuario extends AppCompatActivity {
         setContentView(R.layout.activity_tela_do_usuario);
 
         ola = findViewById(R.id.txtOlaUser);
-        logout = findViewById(R.id.bttLogout);
+        logout = findViewById(R.id.bttLogout2);
         iv = findViewById(R.id.imageView3);
 
         mAuth = FirebaseAuth.getInstance();
