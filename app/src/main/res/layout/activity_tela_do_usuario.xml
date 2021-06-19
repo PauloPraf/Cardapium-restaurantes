@@ -42,7 +42,7 @@
         android:textAllCaps="false"
         app:backgroundTint="@color/amarelo_forte"
         app:cornerRadius="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/bttConfiUser"
+        app:layout_constraintBottom_toBottomOf="@+id/bttquebracoduser"
         app:layout_constraintEnd_toEndOf="@+id/bttVisCardapio"
         app:layout_constraintStart_toStartOf="@+id/bttVisCardapio"
         app:layout_constraintTop_toBottomOf="@+id/txtCadastro" />
@@ -56,12 +56,12 @@
         app:backgroundTint="@color/amarelo_forte"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/bttConfiUser"
-        app:layout_constraintStart_toStartOf="@+id/bttConfiUser"
+        app:layout_constraintEnd_toEndOf="@+id/bttquebracoduser"
+        app:layout_constraintStart_toStartOf="@+id/bttquebracoduser"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/bttConfiUser"
+        android:id="@+id/bttquebracoduser"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_marginTop="40dp"
@@ -85,8 +85,8 @@
         app:backgroundTint="@color/vermelho"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/bttConfiUser"
-        app:layout_constraintStart_toStartOf="@+id/bttConfiUser" />
+        app:layout_constraintEnd_toEndOf="@+id/bttquebracoduser"
+        app:layout_constraintStart_toStartOf="@+id/bttquebracoduser" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
