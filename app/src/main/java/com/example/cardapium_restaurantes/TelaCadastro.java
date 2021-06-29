@@ -1,26 +1,49 @@
 package com.example.cardapium_restaurantes;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import java.util.UUID;
+
+import Model.UserModel;
 
 public class TelaCadastro extends AppCompatActivity {
     private EditText edtTxtNome, edtTxtSobrenome, edtTxtEmail, edtTxtSenha, edtTxtConfirmarSenha;
-    private Button button;
+    private Button button, uploadImage;
     private FirebaseAuth mAuth;
+    private Uri filePath;
+    private ImageView iv;
+    private String urlFotoUser;
+    private final int PICK_IMAGE_REQUEST = 22;
+    private FirebaseStorage storage;
+    private StorageReference sRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +55,19 @@ public class TelaCadastro extends AppCompatActivity {
         edtTxtEmail = findViewById(R.id.edtTxtEmail);
         edtTxtSenha = findViewById(R.id.edtTxtSenha);
         edtTxtConfirmarSenha = findViewById(R.id.edtTxtConfirmarSenha);
+        uploadImage = findViewById(R.id.uploadImage);
+        iv = findViewById(R.id.imageView4);
         button = findViewById(R.id.button);
         mAuth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+        sRef = storage.getReference();
+
+        uploadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+            }
+        });
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +75,39 @@ public class TelaCadastro extends AppCompatActivity {
                 validarDados();
             }
         });
+    }
+
+    private void selectImage() {
+        Intent it = new Intent();
+        it.setType("image/*");
+        it.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(it, "Selecionar foto"), PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE_REQUEST) {
+            filePath = data.getData();
+            iv.setImageURI(filePath);
+        }
+    }
+
+    private void sendPhoto() {
+        Bitmap bitmap = ((BitmapDrawable)iv.getDrawable()).getBitmap();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] image = byteArrayOutputStream.toByteArray();
+
+        StorageReference imgRef = sRef.child("Profile").child(mAuth.getUid()+".jpeg");
+        UploadTask uploadTask = imgRef.putBytes(image);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                 Log.d("Success", "imageUploaded:success");
+            }
+        });
+        Toast.makeText(this, imgRef.getDownloadUrl().toString(), Toast.LENGTH_LONG).show();;
     }
 
     @Override
@@ -94,14 +161,24 @@ public class TelaCadastro extends AppCompatActivity {
     }
 
     private void cadastrarUsuario() {
-        mAuth.createUserWithEmailAndPassword(edtTxtEmail.getText().toString(), edtTxtSenha.getText().toString())
+        UserModel newUser = new UserModel();
+        newUser.setEmail(edtTxtEmail.getText().toString());
+        newUser.setNome(edtTxtNome.getText().toString());
+        newUser.setSobrenome(edtTxtSobrenome.getText().toString());
+
+        mAuth.createUserWithEmailAndPassword(newUser.getEmail(), edtTxtSenha.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(null, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            newUser.setId(mAuth.getUid());
+                            newUser.salvar();
+
+                            if (iv.getDrawable() != null)
+                                sendPhoto();
+
                             Toast.makeText(getApplicationContext(), "Cadastro realizado com sucesso", Toast.LENGTH_LONG).show();
                             startActivity(new Intent(getApplicationContext(), TelaDoUsuario.class));
                         } else {
