@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_marginTop="20dp"
+    >
+
+    <ImageView
+        android:id="@+id/imageCategory"
+        android:layout_width="65dp"
+        android:layout_height="56dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/pizza_doce" />
+
+    <TextView
+        android:id="@+id/titleCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="14dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="ADWJIIADIODJADWIAWD"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</LinearLayout>

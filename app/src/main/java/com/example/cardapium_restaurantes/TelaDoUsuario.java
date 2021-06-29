@@ -4,6 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -26,6 +31,7 @@ import com.google.firebase.storage.StorageReference;
 
 import Model.UserModel;
 
+
 public class TelaDoUsuario extends AppCompatActivity {
     private Button logout;
     private TextView ola;
@@ -35,10 +41,20 @@ public class TelaDoUsuario extends AppCompatActivity {
     private StorageReference storageReference;
     private UserModel currentUser;
 
+    Button bttGerCardapio;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_do_usuario);
+
+
+        bttGerCardapio = findViewById(R.id.bttGerCardapio);
+        bttGerCardapio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(TelaDoUsuario.this, TelaListagemCardapio.class);
+                startActivity(it);
 
         ola = findViewById(R.id.txtOlaUser);
         logout = findViewById(R.id.bttLogout2);
@@ -102,6 +118,7 @@ public class TelaDoUsuario extends AppCompatActivity {
                         Toast.makeText(TelaDoUsuario.this, "Não foi possível recuperar a foto de perfil", Toast.LENGTH_SHORT).show();
                     }
                 });
+
             }
         });
     }
