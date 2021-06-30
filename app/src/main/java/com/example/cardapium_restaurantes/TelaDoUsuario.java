@@ -4,6 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -26,8 +31,9 @@ import com.google.firebase.storage.StorageReference;
 
 import Model.UserModel;
 
+
 public class TelaDoUsuario extends AppCompatActivity {
-    private Button logout, gerCardapio;
+    private Button logout;
     private TextView ola;
     private ImageView iv;
     private FirebaseAuth mAuth;
@@ -35,14 +41,23 @@ public class TelaDoUsuario extends AppCompatActivity {
     private StorageReference storageReference;
     private UserModel currentUser;
 
+    Button bttGerCardapio;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_do_usuario);
 
+
+        bttGerCardapio = findViewById(R.id.bttGerCardapio);
+        bttGerCardapio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(TelaDoUsuario.this, TelaListagemCardapio.class);
+                startActivity(it);
+
         ola = findViewById(R.id.txtOlaUser);
-        logout = findViewById(R.id.bttLogout);
-        gerCardapio = findViewById(R.id.bttGerCardapio);
+        logout = findViewById(R.id.bttLogout2);
         iv = findViewById(R.id.imageView3);
 
         mAuth = FirebaseAuth.getInstance();
@@ -55,13 +70,6 @@ public class TelaDoUsuario extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 Toast.makeText(getApplicationContext(), "Até mais!", Toast.LENGTH_LONG);
-            }
-        });
-
-        gerCardapio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), TelaListagemCardapio.class));
             }
         });
     }
@@ -110,6 +118,7 @@ public class TelaDoUsuario extends AppCompatActivity {
                         Toast.makeText(TelaDoUsuario.this, "Não foi possível recuperar a foto de perfil", Toast.LENGTH_SHORT).show();
                     }
                 });
+
             }
         });
     }
