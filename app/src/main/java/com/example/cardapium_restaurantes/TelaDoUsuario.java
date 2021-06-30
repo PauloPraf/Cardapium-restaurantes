@@ -11,9 +11,6 @@ import android.widget.Button;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,13 +48,15 @@ public class TelaDoUsuario extends AppCompatActivity {
 
         bttGerCardapio = findViewById(R.id.bttGerCardapio);
         bttGerCardapio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent it = new Intent(TelaDoUsuario.this, TelaListagemCardapio.class);
-                startActivity(it);
+                                              @Override
+                                              public void onClick(View v) {
+                                                  Intent it = new Intent(TelaDoUsuario.this, TelaListagemCardapio.class);
+                                                  startActivity(it);
+                                              }
+                                          });
 
         ola = findViewById(R.id.txtOlaUser);
-        logout = findViewById(R.id.bttLogout2);
+        logout = findViewById(R.id.bttLogout);
         iv = findViewById(R.id.imageView3);
 
         mAuth = FirebaseAuth.getInstance();
@@ -70,9 +69,9 @@ public class TelaDoUsuario extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 Toast.makeText(getApplicationContext(), "Até mais!", Toast.LENGTH_LONG);
-            }
-        });
-    }
+                }
+            });
+        }
 
     private void getCurrentUserInfo() {
         DatabaseReference ref = database.getReference().child("Users").child(mAuth.getUid());
