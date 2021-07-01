@@ -67,8 +67,8 @@ public class TelaDoUsuario extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 Toast.makeText(getApplicationContext(), "Até mais!", Toast.LENGTH_LONG);
+                finish();
                 }
             });
         }
@@ -88,7 +88,7 @@ public class TelaDoUsuario extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(getApplicationContext(), "Ocorreu um erro na recuperação dos seus dados, tente novamente", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
             }
         });
 

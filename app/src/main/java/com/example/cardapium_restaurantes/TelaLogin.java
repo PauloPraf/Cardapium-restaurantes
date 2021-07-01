@@ -49,6 +49,12 @@ public class TelaLogin extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        edtTextTextPassword.setText("");
+    }
+
     private void validarCampos() {
         if(edtTextTextEmailAddress.getText().toString().trim().equals("")) {
             Toast.makeText(getApplicationContext(), "Informe o E-mail", Toast.LENGTH_SHORT).show();
@@ -71,7 +77,6 @@ public class TelaLogin extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(null, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(getApplicationContext(), "Login efetuado com sucesso!", Toast.LENGTH_LONG).show();
                             startActivity(new Intent(getApplicationContext(), TelaDoUsuario.class));
                         } else {
