@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fundo_comidas_2_branco"
-    tools:context=".TelaCadastro"
+    tools:context=".TelaGerenciarUsuario"
     android:orientation="vertical"
     android:layout_gravity="center_horizontal">
 
@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/ubuntubolditalic"
-            android:text="Cadastro"
+            android:text="Gerenciar Usuário"
             android:textColor="@color/marrom"
             android:textSize="24sp"
             android:layout_marginTop="16dp"
@@ -205,7 +205,7 @@
                 android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="56dp"
-                android:text="Cadastrar"
+                android:text="Salvar"
                 app:backgroundTint="@color/amarelo_forte"
                 app:cornerRadius="10dp" />
 
