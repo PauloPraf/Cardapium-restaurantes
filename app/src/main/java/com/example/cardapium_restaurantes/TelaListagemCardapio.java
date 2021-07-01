@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
@@ -19,11 +17,6 @@ public class TelaListagemCardapio extends AppCompatActivity {
     private FloatingActionButton fabEdit;
     private FloatingActionButton fabAdd;
 
-//    private Animation rotateOpen = AnimationUtils.loadAnimation(TelaListagemCardapio.this, R.anim.rotate_open_anim);
-//    private Animation rotateClose = AnimationUtils.loadAnimation(TelaListagemCardapio.this, R.anim.rotate_close_anim);
-//    private Animation fromBottom = AnimationUtils.loadAnimation(TelaListagemCardapio.this, R.anim.from_bottom_anim);
-//    private Animation toBottom = AnimationUtils.loadAnimation(TelaListagemCardapio.this, R.anim.to_bottom_anim);
-
     public boolean clicked = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +28,14 @@ public class TelaListagemCardapio extends AppCompatActivity {
         fabMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent it = new Intent(TelaListagemCardapio.this, TelaCriarCategoria.class);
-//                startActivity(it);
                 onAddButtonClicked();
+            }
+        });
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(TelaListagemCardapio.this, TelaCriarItem.class);
+                startActivity(it);
             }
         });
 //        if (fabMore.getVisibility() == View.VISIBLE) {
