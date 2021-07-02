@@ -159,6 +159,10 @@ public class TelaGerenciarUsuario extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+        while(user == null) {
+            if(user != null) break;
+        }
+
         AuthCredential credential = EmailAuthProvider
                 .getCredential(email, "123456");
 
