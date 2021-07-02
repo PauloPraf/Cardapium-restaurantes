@@ -3,13 +3,15 @@ package com.example.cardapium_restaurantes;
 public class ProdutoCardapio {
     public String id;
     public String titleFood;
+    public String preco;
     public int image;
 
     public ProdutoCardapio() {}
 
-    public ProdutoCardapio(String name, int image) {
+    public ProdutoCardapio(String name, int image, String preco) {
         this.titleFood = name;
         this.image = image;
+        this.preco = preco;
     }
 
     public void setId(String id) {

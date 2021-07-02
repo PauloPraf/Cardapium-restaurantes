@@ -4,24 +4,30 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class TelaCriarItem extends AppCompatActivity {
 
     public ArrayAdapter<String> adapterSpinner;
-//    private List<CategoriaCardapio> categorias;
+    private FirebaseAuth mAuth;
     private Spinner spinnerCategorias;
-    private final int PICK_IMAGE_REQUEST = 22;
-    private Uri filePath;
-    private Button btnAddFoto;
+    private EditText editTextNameProd, editTextPrecoProd;
+    private Button btnAddItem;
     private ImageView imageItem;
-    String a [] = {"Pizza salgada", "Pizza doce"};
+    private int image = 0;
+    String a[] = {"Pizzas salgadas", "Pizzas doces", "Lanches", "Bebidas"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,50 +36,77 @@ public class TelaCriarItem extends AppCompatActivity {
 
         spinnerCategorias = findViewById(R.id.spinnerCategoria);
         imageItem = findViewById(R.id.imageItemCriacao);
-        btnAddFoto = findViewById(R.id.btnAddFoto);
         adapterSpinner = new ArrayAdapter<>(TelaCriarItem.this, android.R.layout.simple_spinner_item, a);
         adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategorias.setAdapter(adapterSpinner);
+        editTextNameProd = findViewById(R.id.editTextNomeProd);
+        editTextPrecoProd = findViewById(R.id.editTextPrecoProd);
+        btnAddItem = findViewById(R.id.btnAddItem);
+        mAuth = FirebaseAuth.getInstance();
 
-        btnAddFoto.setOnClickListener(new View.OnClickListener() {
+        spinnerCategorias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                selectImage();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Drawable myDrawable = getResources().getDrawable(setImage(position));
+                imageItem.setImageDrawable(myDrawable);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
+        btnAddItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                validarDados();
+            }
+        });
 
     }
-    public void selectImage() {
-        Intent it = new Intent();
-        it.setType("image/*");
-        it.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(it, "Selecionar foto"), PICK_IMAGE_REQUEST);
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE_REQUEST) {
-            filePath = data.getData();
-            imageItem.setImageURI(filePath);
+    private void validarDados() {
+        if (editTextNameProd.getText().toString().trim().equals("")) {
+            Toast.makeText(getApplicationContext(), "O nome é obrigatório", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        if (editTextPrecoProd.getText().toString().trim().equals("")) {
+            Toast.makeText(getApplicationContext(), "O preço é obrigatório", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        addItem();
     }
 
-//    private void sendPhoto() {
-//        Bitmap bitmap = ((BitmapDrawable)imageItem.getDrawable()).getBitmap();
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-//        byte[] image = byteArrayOutputStream.toByteArray();
+    private int setImage(int index) {
 
-//        StorageReference imgRef = sRef.child("Profile").child(mAuth.getUid()+".jpeg");
-//        UploadTask uploadTask = imgRef.putBytes(image);
-//        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                Log.d("Success", "imageUploaded:success");
-//            }
-//        });
-//        Toast.makeText(this, imgRef.getDownloadUrl().toString(), Toast.LENGTH_LONG).show();;
-//    }
+        int image = 0;
+        switch (index) {
+            case 0:
+                image = R.drawable.pizza_salgada;
+                break;
+            case 1:
+                image = R.drawable.pizza_doce;
+                break;
+            case 2:
+                image = R.drawable.lanche;
+                break;
+            case 3:
+                image = R.drawable.bebida;
+                break;
+        }
+
+        return image;
+    }
+    private void addItem() {
+        Integer index = spinnerCategorias.getSelectedItemPosition();
+        setImage(index);
+        CategoriaCardapio c = new CategoriaCardapio(index.toString(), a[index], image);
+        ProdutoCardapio pc = new ProdutoCardapio(editTextNameProd.getText().toString(), image, editTextPrecoProd.getText().toString());
+        c.foods.add(pc);
+        c.salvar(mAuth.getUid());
+        finish();
+    }
 }

@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Cardapiumrestaurantes">
-        <activity android:name=".TelaCriarCategoria"></activity>
+        <activity android:name=".TelaCriarItem"></activity>
         <activity android:name=".TelaGerenciarUsuario" />
         <activity android:name=".TelaListagemCardapio" />
         <activity android:name=".TelaDoUsuario" />

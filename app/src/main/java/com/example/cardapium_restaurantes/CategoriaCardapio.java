@@ -3,8 +3,6 @@ package com.example.cardapium_restaurantes;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Random;
-
 import java.util.ArrayList;
 
 public class CategoriaCardapio {
@@ -12,9 +10,8 @@ public class CategoriaCardapio {
     public String name;
     public int image;
     public ArrayList<ProdutoCardapio> foods = new ArrayList<ProdutoCardapio>();
-    public CategoriaCardapio(String name, int image) {
-        Random r = new Random();
-        this.id = Long.toHexString(r.nextLong());
+    public CategoriaCardapio(String id ,String name, int image) {
+        this.id = id;
         this.name = name;
         this.image = image;
     }

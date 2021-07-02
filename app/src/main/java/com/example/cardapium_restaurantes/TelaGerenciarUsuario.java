@@ -19,7 +19,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
@@ -157,31 +159,43 @@ public class TelaGerenciarUsuario extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if(newUser.getEmail() != email) {
-            user.updateEmail(newUser.getEmail())
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(getApplicationContext(), "Email Atualizado", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-        }
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(email, "123456");
 
-        String newPassword = edtTxtSenha.getText().toString();
+        user.reauthenticate(credential)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
 
-        if(newPassword != "" && newPassword.length() > 5 && newPassword.equals(edtTxtConfirmarSenha.getText().toString())) {
-            user.updatePassword(newPassword)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(getApplicationContext(), "Senha Atualizada", Toast.LENGTH_SHORT).show();
-                            }
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if(!newUser.getEmail().equals(email)) {
+                            user.updateEmail(newUser.getEmail())
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(getApplicationContext(), "Email Atualizado", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
                         }
-                    });
-        }
+
+                        String newPassword = edtTxtSenha.getText().toString();
+
+                        if(newPassword != "" && newPassword.length() > 5 && newPassword.equals(edtTxtConfirmarSenha.getText().toString())) {
+                            user.updatePassword(newPassword)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(getApplicationContext(), "Senha Atualizada", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                        }
+
+                    }
+                });
 
         if (iv.getDrawable() != null)
             sendPhoto();
