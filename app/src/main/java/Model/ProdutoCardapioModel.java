@@ -1,14 +1,14 @@
-package com.example.cardapium_restaurantes;
+package Model;
 
-public class ProdutoCardapio {
+public class ProdutoCardapioModel {
     public String id;
     public String titleFood;
     public String preco;
     public int image;
 
-    public ProdutoCardapio() {}
+    public ProdutoCardapioModel() {}
 
-    public ProdutoCardapio(String name, int image, String preco) {
+    public ProdutoCardapioModel(String name, int image, String preco) {
         this.titleFood = name;
         this.image = image;
         this.preco = preco;

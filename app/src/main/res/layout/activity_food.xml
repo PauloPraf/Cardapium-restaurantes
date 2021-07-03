@@ -23,9 +23,10 @@
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@+id/imageFood"
         android:gravity="center"
-        android:text="Ryan20" />
+        android:text="@string/ryan20" />
 
     <TextView
+        android:id="@+id/precoFood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="false"
@@ -33,9 +34,6 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
-        android:text="Preço: R$ 30,00" />
-
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_width="wrap_content"      PARA A IMAGEVIEW  -->
+        android:text="@string/pre_o_r_0_00" />
 
 </RelativeLayout>

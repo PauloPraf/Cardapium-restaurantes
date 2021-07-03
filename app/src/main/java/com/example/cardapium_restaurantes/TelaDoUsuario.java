@@ -30,7 +30,7 @@ import Model.UserModel;
 
 
 public class TelaDoUsuario extends AppCompatActivity {
-    private Button logout, bttGerCardapio, bttGerUsuario;
+    private Button logout, bttGerCardapio, bttGerUsuario, bttVisualizarCardapios;
     private TextView ola;
     private ImageView iv;
     private FirebaseAuth mAuth;
@@ -52,6 +52,14 @@ public class TelaDoUsuario extends AppCompatActivity {
                                                   startActivity(it);
                                               }
                                           });
+
+        bttVisualizarCardapios = findViewById(R.id.bttVisCardapio);
+        bttVisualizarCardapios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(TelaDoUsuario.this, TelaVisualizarCardapios.class));
+            }
+        });
 
         ola = findViewById(R.id.txtOlaUser);
         logout = findViewById(R.id.bttLogout);

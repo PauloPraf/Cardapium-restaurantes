@@ -6,21 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".TelaListagemCardapio">
 
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/fabAdd"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="18dp"
-        android:layout_marginRight="18dp"
-        android:layout_marginBottom="30dp"
-        android:clickable="true"
-        android:visibility="invisible"
-        app:srcCompat="@drawable/ic_edit" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAdd"
         android:layout_width="393dp"
@@ -33,6 +18,7 @@
         android:layout_marginRight="18dp"
         android:layout_marginBottom="8dp"
         android:clickable="true"
+        app:backgroundTint="@color/amarelo_medio"
         app:srcCompat="@drawable/ic_add" />
 
     <ExpandableListView
