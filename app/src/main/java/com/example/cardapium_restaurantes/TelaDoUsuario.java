@@ -30,15 +30,13 @@ import Model.UserModel;
 
 
 public class TelaDoUsuario extends AppCompatActivity {
-    private Button logout;
+    private Button logout, bttGerCardapio, bttGerUsuario, bttVisualizarCardapios;
     private TextView ola;
     private ImageView iv;
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private StorageReference storageReference;
     private UserModel currentUser;
-
-    Button bttGerCardapio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +52,14 @@ public class TelaDoUsuario extends AppCompatActivity {
                                                   startActivity(it);
                                               }
                                           });
+
+        bttVisualizarCardapios = findViewById(R.id.bttVisCardapio);
+        bttVisualizarCardapios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(TelaDoUsuario.this, TelaVisualizarCardapios.class));
+            }
+        });
 
         ola = findViewById(R.id.txtOlaUser);
         logout = findViewById(R.id.bttLogout);
@@ -71,7 +77,26 @@ public class TelaDoUsuario extends AppCompatActivity {
                 finish();
                 }
             });
-        }
+
+        bttGerUsuario = findViewById(R.id.bttGerUsuario);
+        bttGerUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(TelaDoUsuario.this, TelaGerenciarUsuario.class);
+                it.putExtra("id", currentUser.getId());
+                it.putExtra("nome", currentUser.getNome());
+                it.putExtra("sobrenome", currentUser.getSobrenome());
+                it.putExtra("email", currentUser.getEmail());
+                startActivity(it);
+            }
+        });
+
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        getCurrentUserInfo();
+    }
 
     private void getCurrentUserInfo() {
         DatabaseReference ref = database.getReference().child("Users").child(mAuth.getUid());

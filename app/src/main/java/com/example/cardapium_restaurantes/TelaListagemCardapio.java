@@ -5,16 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,13 +19,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import Interfaces.OnGetDataListener;
-import Model.UserModel;
+import Model.CategoriaCardapioModel;
+import Model.ProdutoCardapioModel;
 
 public class TelaListagemCardapio extends AppCompatActivity {
     private FloatingActionButton fabMore;
@@ -52,7 +44,6 @@ public class TelaListagemCardapio extends AppCompatActivity {
 
         fabMore = findViewById(R.id.fabMoreAction);
         fabAdd = findViewById(R.id.fabAdd);
-        fabEdit = findViewById(R.id.fabEdit);
         fabMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,11 +54,9 @@ public class TelaListagemCardapio extends AppCompatActivity {
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                persistir();
+                startActivity(new Intent(getApplicationContext(), TelaItem.class));
             }
         });
-
-
     }
 
     @Override
@@ -76,19 +65,21 @@ public class TelaListagemCardapio extends AppCompatActivity {
 
         ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
         expandableListView.setIndicatorBounds(950, 0);
-        ArrayList<CategoriaCardapio> cardapios = new ArrayList<>();
+        ArrayList<CategoriaCardapioModel> cardapios = new ArrayList<>();
         getData(new OnGetDataListener() {
             @Override
             public void onSuccess(Iterable<DataSnapshot> dataSnapshotValue) {
                 for(DataSnapshot snap : dataSnapshotValue) {
+                    String id = snap.child("id").getValue(String.class);
                     String nome = snap.child("name").getValue(String.class);
                     int img = snap.child("image").getValue(Integer.class);
-                    CategoriaCardapio card = new CategoriaCardapio(nome, img);
+                    CategoriaCardapioModel card = new CategoriaCardapioModel(id, nome, img);
                     for(DataSnapshot child : snap.child("foods").getChildren()) {
                         String titleFood = child.child("titleFood").getValue(String.class);
                         int image = child.child("image").getValue(Integer.class);
+                        String preco = child.child("preco").getValue(String.class);
 
-                        card.foods.add(new ProdutoCardapio(titleFood, image));
+                        card.foods.add(new ProdutoCardapioModel(titleFood, image, preco));
                     }
 
                     cardapios.add(card);
@@ -98,10 +89,23 @@ public class TelaListagemCardapio extends AppCompatActivity {
                 expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                     @Override
                     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                        Toast.makeText(getApplicationContext(), "Ryan", Toast.LENGTH_SHORT);
-                        return false;
+                        Intent it = new Intent(TelaListagemCardapio.this, TelaItem.class);
+                        String card = cardapios.get(groupPosition).name;
+                        String titleFood = cardapios.get(groupPosition).foods.get(childPosition).titleFood;
+                        int image = cardapios.get(groupPosition).foods.get(childPosition).image;
+                        String preco = cardapios.get(groupPosition).foods.get(childPosition).preco;
+                        it.putExtra("cardFather", card);
+                        it.putExtra("title", titleFood);
+                        it.putExtra("img", image);
+                        it.putExtra("preco", preco);
+                        it.putExtra("indexChange", childPosition);
+                        startActivity(it);
+                        return true;
                     }
                 });
+            }
+            public void onSingleSuccess(DataSnapshot data){
+
             }
         });
 
@@ -124,30 +128,6 @@ public class TelaListagemCardapio extends AppCompatActivity {
         });
     }
 
-    private void persistir() {
-        CategoriaCardapio categoria1 = new CategoriaCardapio("Pizzas salgadas", R.drawable.pizza_salgada);
-        categoria1.foods.add(new ProdutoCardapio("Calabresa", R.drawable.pizza_salgada));
-        categoria1.foods.add(new ProdutoCardapio("Moda da casa", R.drawable.pizza_salgada));
-        categoria1.foods.add(new ProdutoCardapio("Quatro queijos", R.drawable.pizza_salgada));
-        categoria1.foods.add(new ProdutoCardapio("Marguerita", R.drawable.pizza_salgada));
-        categoria1.foods.add(new ProdutoCardapio("Bacon", R.drawable.pizza_salgada));
-
-        CategoriaCardapio categoria2 = new CategoriaCardapio("Pizzas doces",R.drawable.pizza_doce);
-        categoria2.foods.add(new ProdutoCardapio("Brigadeiro", R.drawable.pizza_doce));
-        categoria2.foods.add(new ProdutoCardapio("Beijinho", R.drawable.pizza_doce));
-        categoria2.foods.add(new ProdutoCardapio("Confete", R.drawable.pizza_doce));
-        categoria2.foods.add(new ProdutoCardapio("Dois amores", R.drawable.pizza_doce));
-        categoria2.foods.add(new ProdutoCardapio("Romeu e julieta", R.drawable.pizza_doce));
-
-        ArrayList<CategoriaCardapio> allCategories = new ArrayList<CategoriaCardapio>();
-        allCategories.add(categoria1);
-        allCategories.add(categoria2);
-
-        for( CategoriaCardapio c : allCategories) {
-            c.salvar(mAuth.getUid());
-        }
-    }
-
     private void onAddButtonClicked() {
         setVisibility(clicked);
 
@@ -160,10 +140,8 @@ public class TelaListagemCardapio extends AppCompatActivity {
 
     private void setVisibility(boolean clicked) {
         if (!clicked) {
-            fabEdit.setVisibility(View.VISIBLE);
             fabAdd.setVisibility(View.VISIBLE);
         }else {
-            fabEdit.setVisibility(View.INVISIBLE);
             fabAdd.setVisibility(View.INVISIBLE);
         }
     }

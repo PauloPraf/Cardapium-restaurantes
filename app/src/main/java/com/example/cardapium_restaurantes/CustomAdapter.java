@@ -2,7 +2,6 @@ package com.example.cardapium_restaurantes;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +10,18 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
+
+import Model.CategoriaCardapioModel;
+import Model.ProdutoCardapioModel;
 
 public class CustomAdapter extends BaseExpandableListAdapter {
 
     private Context c;
-    private ArrayList<CategoriaCardapio> categoriaCardapio;
+    private ArrayList<CategoriaCardapioModel> categoriaCardapio;
     private LayoutInflater inflater;
 
-    public CustomAdapter(Context c, ArrayList<CategoriaCardapio> categoriaCardapio) {
+    public CustomAdapter(Context c, ArrayList<CategoriaCardapioModel> categoriaCardapio) {
         this.c = c;
         this.categoriaCardapio = categoriaCardapio;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -68,7 +68,7 @@ public class CustomAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.activity_categoria, null);
         }
         // set category
-        CategoriaCardapio categoriaCardapio = (CategoriaCardapio) getGroup(groupPosition);
+        CategoriaCardapioModel categoriaCardapio = (CategoriaCardapioModel) getGroup(groupPosition);
 
         // set category items
         TextView titleFood = (TextView) convertView.findViewById(R.id.titleCategory);
@@ -91,14 +91,18 @@ public class CustomAdapter extends BaseExpandableListAdapter {
         if(convertView == null) {
             convertView = inflater.inflate(R.layout.activity_food, null);
         }
-        ProdutoCardapio child = (ProdutoCardapio) getChild(groupPosition, childPosition);
+        ProdutoCardapioModel child = (ProdutoCardapioModel) getChild(groupPosition, childPosition);
         Log.i(child.toString(), "child");
         TextView titleFood = (TextView) convertView.findViewById(R.id.titleFood);
+        TextView precoFood = (TextView) convertView.findViewById(R.id.precoFood);
         ImageView imageFood = (ImageView) convertView.findViewById(R.id.imageFood);
 //        String nameTest = categoriaCardapio
         imageFood.setImageResource(child.image);
 
+        String preco = "R$" + child.preco +",00";
+
         titleFood.setText(child.titleFood);
+        precoFood.setText(preco);
 
 
 //        String categoryName = getGroup(groupPosition).toString();

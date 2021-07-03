@@ -19,7 +19,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
@@ -36,7 +38,7 @@ public class TelaGerenciarUsuario extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Uri filePath;
     private ImageView iv;
-    private String urlFotoUser;
+    private String idUser, email;
     private final int PICK_IMAGE_REQUEST = 22;
     private FirebaseStorage storage;
     private StorageReference sRef;
@@ -58,6 +60,16 @@ public class TelaGerenciarUsuario extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         sRef = storage.getReference();
 
+        Bundle extras = getIntent().getExtras();
+
+        if(extras != null) {
+            edtTxtNome.setText(extras.getString("nome"));
+            edtTxtSobrenome.setText(extras.getString("sobrenome"));
+            email = extras.getString("email");
+            edtTxtEmail.setText(email);
+            idUser = extras.getString("id");
+        }
+
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,6 +83,13 @@ public class TelaGerenciarUsuario extends AppCompatActivity {
                 validarDados();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
     }
 
     private void selectImage() {
@@ -106,17 +125,6 @@ public class TelaGerenciarUsuario extends AppCompatActivity {
         Toast.makeText(this, imgRef.getDownloadUrl().toString(), Toast.LENGTH_LONG).show();;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null) {
-            Toast.makeText(getApplicationContext(), "Existe uma sessão ativa", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(getApplicationContext(), TelaDoUsuario.class));
-        }
-    }
-
     private void validarDados() {
         if(edtTxtNome.getText().toString().trim().equals("")) {
             Toast.makeText(getApplicationContext(), "O nome é obrigatório", Toast.LENGTH_SHORT).show();
@@ -138,53 +146,66 @@ public class TelaGerenciarUsuario extends AppCompatActivity {
             return;
         }
 
-        if(edtTxtSenha.length() < 6) {
-            Toast.makeText(getApplicationContext(), "A senha deve possuir pelo menos 6 caracteres", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-        if(edtTxtSenha.getText().toString().trim().equals("")) {
-            Toast.makeText(getApplicationContext(), "A senha é obrigatória", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if(!edtTxtSenha.getText().toString().equals(edtTxtConfirmarSenha.getText().toString())) {
-            Toast.makeText(getApplicationContext(), "A senha e a confirmação devem ser iguais", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        cadastrarUsuario();
+        atualizarUsuario();
     }
 
-    private void cadastrarUsuario() {
+    private void atualizarUsuario() {
         UserModel newUser = new UserModel();
+        newUser.setId(idUser);
         newUser.setEmail(edtTxtEmail.getText().toString());
         newUser.setNome(edtTxtNome.getText().toString());
         newUser.setSobrenome(edtTxtSobrenome.getText().toString());
 
-        mAuth.createUserWithEmailAndPassword(newUser.getEmail(), edtTxtSenha.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        while(user == null) {
+            if(user != null) break;
+        }
+
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(email, "123456");
+
+        user.reauthenticate(credential)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(null, "createUserWithEmail:success");
-                            newUser.setId(mAuth.getUid());
-                            newUser.salvar();
+                    public void onComplete(@NonNull Task<Void> task) {
 
-                            if (iv.getDrawable() != null)
-                                sendPhoto();
-
-                            Toast.makeText(getApplicationContext(), "Cadastro realizado com sucesso", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(getApplicationContext(), TelaDoUsuario.class));
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(null, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "Ocorreu um erro, tente novamente.",
-                                    Toast.LENGTH_SHORT).show();
-                            return;
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if(!newUser.getEmail().equals(email)) {
+                            user.updateEmail(newUser.getEmail())
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(getApplicationContext(), "Email Atualizado", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
                         }
+
+                        String newPassword = edtTxtSenha.getText().toString();
+
+                        if(newPassword != "" && newPassword.length() > 5 && newPassword.equals(edtTxtConfirmarSenha.getText().toString())) {
+                            user.updatePassword(newPassword)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(getApplicationContext(), "Senha Atualizada", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                        }
+
                     }
                 });
+
+        if (iv.getDrawable() != null)
+            sendPhoto();
+
+        newUser.salvar();
+        Toast.makeText(getApplicationContext(), "Dados Atualizados!", Toast.LENGTH_LONG).show();
+        finish();
     }
 }

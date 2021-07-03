@@ -40,7 +40,6 @@ public class TelaCadastro extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Uri filePath;
     private ImageView iv;
-    private String urlFotoUser;
     private final int PICK_IMAGE_REQUEST = 22;
     private FirebaseStorage storage;
     private StorageReference sRef;
